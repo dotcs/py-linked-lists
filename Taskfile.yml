@@ -7,7 +7,7 @@ tasks:
       - pip install -e .
   lint:
     cmds:
-      - mypy *.py
+      - mypy linked_list/ tests/
   test:
     cmds:
       - pytest tests/

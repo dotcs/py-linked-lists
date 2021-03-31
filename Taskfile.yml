@@ -1,0 +1,13 @@
+version: "3"
+tasks:
+  default:
+    deps: [lint, test]
+  install:
+    cmds:
+      - pip install -e .
+  lint:
+    cmds:
+      - mypy *.py
+  test:
+    cmds:
+      - pytest tests/

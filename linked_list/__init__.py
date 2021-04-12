@@ -17,6 +17,7 @@ class LinkedList(Generic[T]):
     def __init__(self, data, next_=None) -> None:
         self.data: T = data
         self.next: Optional[LinkedList[T]] = next_
+        self._prev: Optional[LinkedList[T]] = None  # only used temporarily in reverse method
     
     def __repr__(self) -> str:
         try:
@@ -79,8 +80,23 @@ class LinkedList(Generic[T]):
         last = self.get_last()
         last.next = LinkedList(data, None)
 
-    def reverse(self) -> LinkedList[T]:
-        pass
+    @staticmethod
+    def reverse(ll: LinkedList[T]) -> LinkedList[T]:
+        """Reverses a given LinkedList by traversing through it twice."""
+        p = ll
+        p._prev = None
+        while p.next is not None:
+            q = p.next
+            q._prev = p
+            p = q
+        end_node = p  # save last node as it will be the new origin node
+        while p._prev is not None:
+            r = p._prev
+            p.next = r
+            p._prev = None
+            p = r
+        p.next = None
+        return end_node
 
     def pop(self) -> Tuple[T, Optional[LinkedList[T]]]:
         """Extract and return the first item in the LinkedList."""

@@ -94,3 +94,10 @@ class TestLinkedList(unittest.TestCase):
 
         ll: LinkedList[int] = LinkedList(1, LinkedList(2, LinkedList(2, LinkedList(1))))
         assert repr(LinkedList.dedupe(ll)) == '1-2-1'
+
+    def test_reverse_impl(self):
+        ll: LinkedList[int] = LinkedList(1, LinkedList(2, LinkedList(3, LinkedList(4))))
+        assert repr(LinkedList.reverse(ll)) == '4-3-2-1'
+
+        ll: LinkedList[int] = LinkedList(1)
+        assert repr(LinkedList.reverse(ll)) == '1'

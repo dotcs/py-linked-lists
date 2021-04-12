@@ -7,3 +7,16 @@ This repository is for fun and learning about a bunch of things:
 - Use `mypy` for static code analysis
 
 Please note that this code is not production ready.
+
+## Getting started
+
+This repository uses [Taskfile].
+
+Clone the repository and then install and lint/test the package with
+
+```console
+$ task install
+$ task lint test
+```
+
+[taskfile]: https://taskfile.dev

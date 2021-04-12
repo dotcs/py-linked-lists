@@ -31,6 +31,9 @@ class TestLinkedList(unittest.TestCase):
         assert ll.next is not None
         assert ll.next.data == 2
 
+        ll: LinkedList[int] = LinkedList(1, LinkedList(2, LinkedList(3)))
+        assert len(ll) == 3
+
     def test_is_circular_should_not_return_false_for_noncircular_lists(self):
         ll: LinkedList[int] = LinkedList(1, None)
         assert ll.is_circular() == False
@@ -97,7 +100,7 @@ class TestLinkedList(unittest.TestCase):
 
     def test_reverse_impl(self):
         ll: LinkedList[int] = LinkedList(1, LinkedList(2, LinkedList(3, LinkedList(4))))
-        assert repr(LinkedList.reverse(ll)) == '4-3-2-1'
+        assert repr(ll.reverse()) == '4-3-2-1'
 
         ll: LinkedList[int] = LinkedList(1)
-        assert repr(LinkedList.reverse(ll)) == '1'
+        assert repr(ll.reverse()) == '1'

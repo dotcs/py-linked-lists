@@ -1,8 +1,17 @@
 from __future__ import annotations
-from typing import Optional, Tuple, Generic, TypeVar
+from abc import abstractmethod
+from typing import Optional, Tuple, Generic, TypeVar, Protocol
 from math import inf
 
-T = TypeVar('T')
+
+class Comparable(Protocol):
+    """Protocol for annotating comparable types."""
+
+    @abstractmethod
+    def __lt__(self: T, other: T) -> bool:
+        pass
+
+T = TypeVar('T', bound=Comparable)
 
 class LinkedList(Generic[T]):
     def __init__(self, data, next_=None) -> None:
@@ -91,14 +100,56 @@ class LinkedList(Generic[T]):
         tail = cur.next
         cur.next = LinkedList(data, tail)
 
-    def sort(self) -> LinkedList[T]:
-        pass
+    @staticmethod
+    def sort(ll: LinkedList[T], method="bubblesort") -> LinkedList[T]:
+        if method == "bubblesort":
+            return _bubblesort(ll)
+        raise NotImplementedError(f"Method '{method}' for sorting is not implemented.")
 
     def dedupe(self) -> LinkedList[T]:
-        pass
+        p = self
+        while p.next is not None:
+            q = p.next
+            if p.data == q.data:
+                if q.next is None:
+                    p.next = None
+                    break
+                else:
+                    p.next = q.next
+                    q = q.next
+            else:
+                p = q
+        return self
 
     @staticmethod
     def merge(list1: LinkedList[T], list2: LinkedList[T]) -> LinkedList[T]:
         last = list1.get_last()
         last.next = list2
         return list1
+
+def _bubblesort(ll: LinkedList[T]) -> LinkedList[T]:
+    """
+    Bubble sort with link exchange.
+    See: https://en.wikipedia.org/wiki/Bubble_sort
+    """
+    start_node = ll  # start node must be variable
+    end = None
+    while end != start_node:
+        r = p = start_node 
+        while p.next is not None and p.next != end:
+            q = p.next
+            if p.data > q.data:
+                # sort by exchanging references to next items
+                p.next = q.next
+                q.next = p
+                if p != start_node:
+                    r.next = q
+                else:
+                    start_node = q
+                p, q = q, p
+            # move to next item in chain
+            r = p
+            assert p.next is not None  # needed for mypy
+            p = p.next
+        end = p  # ignore rest, because it's already sorted
+    return start_node

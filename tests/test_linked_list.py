@@ -77,3 +77,20 @@ class TestLinkedList(unittest.TestCase):
         l1: LinkedList[int] = LinkedList(1)
         l2: LinkedList[int] = LinkedList(2)
         assert repr(LinkedList.merge(l1, l2)) == '1-2'
+
+    def test_sort_impl(self):
+        ll: LinkedList[int] = LinkedList(3, LinkedList(2, LinkedList(1)))
+        assert repr(LinkedList.sort(ll)) == '1-2-3'
+
+        ll: LinkedList[int] = LinkedList(1, LinkedList(2, LinkedList(1)))
+        assert repr(LinkedList.sort(ll)) == '1-1-2'
+    
+    def test_dedupe_impl(self):
+        ll: LinkedList[int] = LinkedList(1, LinkedList(1, LinkedList(1)))
+        assert repr(LinkedList.dedupe(ll)) == '1'
+
+        ll: LinkedList[int] = LinkedList(2, LinkedList(1, LinkedList(1)))
+        assert repr(LinkedList.dedupe(ll)) == '2-1'
+
+        ll: LinkedList[int] = LinkedList(1, LinkedList(2, LinkedList(2, LinkedList(1))))
+        assert repr(LinkedList.dedupe(ll)) == '1-2-1'

@@ -1,7 +1,7 @@
 from __future__ import annotations
 from abc import abstractmethod
 from typing import Optional, Tuple, Generic, TypeVar, Protocol
-from math import inf, ceil
+from math import inf, floor, ceil
 
 
 class Comparable(Protocol):
@@ -45,7 +45,16 @@ class LinkedList(Generic[T]):
         return 1 + len(self.next)
 
     def split_equal(self) -> Tuple[LinkedList, Optional[LinkedList]]:
-        """Splits a list equally into two parts. Returns a tuple."""
+        """
+        Splits a list equally into two parts. Returns a tuple consisting of
+        two separated linked lists.
+        
+        In case the LinkedList consists of a single item, the second item in
+        the tuple will be None.
+        In case the LinkedList consists of an uneven number of items (n + 1 +
+        n), with n >= 1, the first item in the result tuple will contain the
+        uneven element ((n+1), n).
+        """
         slow = self
         fast = self
         while True:
@@ -136,6 +145,46 @@ class LinkedList(Generic[T]):
         last = list1.get_last()
         last.next = list2
         return list1
+
+    def is_palindrome(self) -> bool:
+        """
+        Tests if the LinkedList is a palindrome by splitting the list in equal
+        parts, then reverse the second part and compare the items.
+        After it has been determined if the list is a palindrome the original
+        linked list is restored again.
+        """
+        part1, part2 = self.split_equal()
+
+        # Exit early if the LinkedList has len 1, which means part2 will be
+        # None (see definition of split_equal method).
+        if part2 is None:
+            return True
+
+        # Reverse the second part so that part1 and part2 can be compared item
+        # by item in the chain.
+        part2 = LinkedList.reverse(part2)
+
+        p = part1
+        q = part2
+        result = None
+        while True:
+            if p.data != q.data:
+                result = False
+                break
+            if p.next is None or q.next is None:
+                result = True
+                break
+            p = p.next
+            q = q.next
+        
+        # attach reversed part2 list to end of part1, which is now either
+        # p (even length) or p.next (uneven length).
+        if p.next is not None:
+            p = p.next
+        p.next = LinkedList.reverse(part2)
+
+        return result
+
 
 def _bubblesort(ll: LinkedList[T]) -> LinkedList[T]:
     """

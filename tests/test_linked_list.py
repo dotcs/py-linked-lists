@@ -102,5 +102,27 @@ class TestLinkedList(unittest.TestCase):
         ll: LinkedList[int] = LinkedList(1, LinkedList(2, LinkedList(3, LinkedList(4))))
         assert repr(ll.reverse()) == '4-3-2-1'
 
+        ll: LinkedList[int] = LinkedList(1, LinkedList(2, LinkedList(3)))
+        assert repr(ll.reverse()) == '3-2-1'
+
         ll: LinkedList[int] = LinkedList(1)
         assert repr(ll.reverse()) == '1'
+
+    def test_palindrome_should_return_true_for_palindroms(self):
+        ll: LinkedList[int] = LinkedList(1, LinkedList(2, LinkedList(2, LinkedList(1))))
+        assert ll.is_palindrome()
+        assert repr(ll) == '1-2-2-1'
+
+        ll: LinkedList[int] = LinkedList(1, LinkedList(2, LinkedList(1)))
+        assert ll.is_palindrome()
+        assert repr(ll) == '1-2-1'
+
+    def test_palindrome_should_return_true_for_single_entry_linked_lists(self):
+        ll: LinkedList[int] = LinkedList(1)
+        assert ll.is_palindrome()
+        assert repr(ll) == '1'
+
+    def test_palindrome_should_return_false_if_input_is_no_palindrome(self):
+        ll: LinkedList[int] = LinkedList(1, LinkedList(2, LinkedList(3)))
+        assert not ll.is_palindrome()
+        assert repr(ll) == '1-2-3'

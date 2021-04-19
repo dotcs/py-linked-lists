@@ -1,7 +1,7 @@
 from __future__ import annotations
 from abc import abstractmethod
-from typing import Optional, Tuple, Generic, TypeVar, Protocol
 from math import inf, floor, ceil
+from typing import Optional, Tuple, Generic, TypeVar, Protocol, Union
 
 
 class Comparable(Protocol):
@@ -14,9 +14,9 @@ class Comparable(Protocol):
 T = TypeVar('T', bound=Comparable)
 
 class LinkedList(Generic[T]):
-    def __init__(self, data, next_=None) -> None:
-        self.data: T = data
-        self.next: Optional[LinkedList[T]] = next_
+    def __init__(self, data: T, next_: Optional[LinkedList[T]] = None) -> None:
+        self.data = data
+        self.next = next_
     
     def __repr__(self) -> str:
         try:
@@ -44,7 +44,7 @@ class LinkedList(Generic[T]):
             return 1
         return 1 + len(self.next)
 
-    def split_equal(self) -> Tuple[LinkedList, Optional[LinkedList]]:
+    def split_equal(self) -> Tuple[LinkedList[T], Optional[LinkedList[T]]]:
         """
         Splits a list equally into two parts. Returns a tuple consisting of
         two separated linked lists.
@@ -120,7 +120,11 @@ class LinkedList(Generic[T]):
         cur.next = LinkedList(data, tail)
 
     @staticmethod
-    def sort(ll: LinkedList[T], method="bubblesort") -> LinkedList[T]:
+    def sort(ll: LinkedList[T], method: str = "bubblesort") -> LinkedList[T]:
+        """
+        Sort the linked list by applying a sorting method.
+        By default bubblesort is used.
+        """
         if method == "bubblesort":
             return _bubblesort(ll)
         raise NotImplementedError(f"Method '{method}' for sorting is not implemented.")

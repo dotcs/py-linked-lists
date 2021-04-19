@@ -17,7 +17,7 @@ jobs:
           pip install -e .
       - name: Lint with mypy
         run: |
-          mypy linked_list/ tests/
+          mypy data_structures/ tests/
       - name: Test with pytest
         run: |
           pytest tests/

@@ -11,18 +11,22 @@ class Comparable(Protocol):
     def __lt__(self: T, other: T) -> bool:
         pass
 
-T = TypeVar('T', bound=Comparable)
+
+T = TypeVar("T", bound=Comparable)
+
 
 class LinkedList(Generic[T]):
     def __init__(self, data: T, next_: Optional[LinkedList[T]] = None) -> None:
         self.data = data
         self.next = next_
-    
+
     def __repr__(self) -> str:
         try:
-            return str(self.data) + (('-' + repr(self.next)) if self.next is not None else '')
+            return str(self.data) + (
+                ("-" + repr(self.next)) if self.next is not None else ""
+            )
         except RecursionError:
-            return str(self.data) + (('-' + '...') if self.next is not None else '')
+            return str(self.data) + (("-" + "...") if self.next is not None else "")
 
     def contains(self, data: T) -> bool:
         if self.data == data:
@@ -38,7 +42,7 @@ class LinkedList(Generic[T]):
         while cur.next is not None:
             cur = cur.next
         return cur
-    
+
     def __len__(self) -> int:
         if self.next is None:
             return 1
@@ -48,7 +52,7 @@ class LinkedList(Generic[T]):
         """
         Splits a list equally into two parts. Returns a tuple consisting of
         two separated linked lists.
-        
+
         In case the LinkedList consists of a single item, the second item in
         the tuple will be None.
         In case the LinkedList consists of an uneven number of items (n + 1 +
@@ -180,7 +184,7 @@ class LinkedList(Generic[T]):
                 break
             p = p.next
             q = q.next
-        
+
         # attach reversed part2 list to end of part1, which is now either
         # p (even length) or p.next (uneven length).
         if p.next is not None:
@@ -198,7 +202,7 @@ def _bubblesort(ll: LinkedList[T]) -> LinkedList[T]:
     start_node = ll  # start node must be variable
     end = None
     while end != start_node:
-        r = p = start_node 
+        r = p = start_node
         while p.next is not None and p.next != end:
             q = p.next
             if p.data > q.data:
